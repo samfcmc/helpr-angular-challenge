@@ -1,0 +1,22 @@
+{
+  "name": "Helpr Angular Challenge",
+  "authors": [
+    "jerome@helprapp.io"
+  ],
+  "description": "This is a sample app for a front-end candidate to provide an improvement over the existing code.",
+  "main": "",
+  "license": "MIT",
+  "homepage": "http://helprapp.io",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.2",
+    "bootstrap": "^3.3.7"
+  }
+}

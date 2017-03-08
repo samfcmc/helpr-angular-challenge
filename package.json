@@ -1,0 +1,15 @@
+{
+  "name": "helpr-angular-challenge",
+  "version": "1.0.0",
+  "description": "Welcome to the Helpr Angular Challenge. In this exercise, you'll be required to analyze this sample app and provide improvements and optimization according to modern standards and good practices.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jerome@helprapp.io",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-serve": "^1.4.0"
+  }
+}

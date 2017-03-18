@@ -6,27 +6,34 @@
     <script src="script/vendor/angular.js"></script>
     <script src="script/vendor/jquery.js"></script>
     <script src="script/vendor/bootstrap.js"></script>
-    <script src="script/app.js"></script>
+    <script src="app.js"></script>
+    <script src="tasks/task-service.js"></script>
+    <script src="tasks/tasks-controller.js"></script>
+    <script src="tasks/priority-filter.js"></script>
     <title>Helpr Angular Challenge</title>
   </head>
   <body ng-app="app">
-    <h1>Tasks</h1>
-    <p>You currently have {{tasks.length}} remaining tasks</p>
-    <div ng-controller="AppCtrl" ng-init="setPriority(tasks)">
+    
+    <div>
+      
       <div ng-controller="TasksCtrl">
         <div class="row">
+          <h1>Tasks</h1>
+          <p>You currently have {{tasks.length}} remaining tasks</p>    
+        </div>
+        <div class="row">
           <div class="col-sm-8">
-            <input class="form-control" type="text" placeholder="Add a new task" ng-model="task.title">
+            <input class="form-control" type="text" placeholder="Add a new task" ng-model="newTask.title">
           </div>
           <div class="col-sm-2">
-            <select class="form-control" ng-model="task.priority">
-              <option value="3">Low</option>
-              <option value="2">Normal</option>
-              <option value="1">High</option>
+            <select class="form-control" ng-model="newTask.priority">
+              <option value="3">{{3 | priority}}</option>
+              <option value="2">{{2 | priority}}</option>
+              <option value="1">{{1 | priority}}</option>
             </select>
           </div>
           <div class="col-sm-2">
-            <button class="btn btn-info btn-block" ng-click="add()">+</button>
+            <button class="btn btn-info btn-block" ng-click="add(newTask)">+</button>
           </div>
         </div>
         <div ng-repeat="task in tasks">
@@ -35,15 +42,13 @@
               <input class="form-control" type="text" value="{{task.title}}" disabled>
             </div>
             <div class="col-sm-2">
-              <input class="form-control" type="text" value="{{task.priority}}" disabled>
+              <input class="form-control" type="text" value="{{task.priority | priority}}" disabled>
             </div>
             <div class="col-sm-2">
               <button class="btn btn-danger btn-block" ng-click="remove(task)">&times;</button>
             </div>
           </div>
         </div>
-      </div>
-      <div ng-controller="ToolsCtrl">
         <div class="row">
           <div class="col-sm-12">
             <button class="btn btn-warning btn-block" ng-click="clear()" ng-disabled="!tasks.length">Clear</button>

@@ -1,0 +1,17 @@
+<div class="col-sm-8">
+	<input class="form-control" type="text" placeholder="Add a new task" 
+	ng-model="$newTask.title">
+</div>
+<div class="col-sm-2">
+	<select class="form-control" ng-model="$newTask.priority">
+		<option value="3">{{3 | priority}}</option>
+		<option value="2">{{2 | priority}}</option>
+		<option value="1">{{1 | priority}}</option>
+	</select>
+</div>
+<div class="col-sm-2">
+	<submit class="btn btn-info btn-block" 
+	ng-click="submit($newTask)">
+		+
+	</submit>
+</div>

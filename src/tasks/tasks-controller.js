@@ -2,7 +2,7 @@
  * Tasks controller
  * Handles a list of tasks
  */
-app.controller('TasksCtrl', ['TaskService', '$scope', (TaskService, $scope) => {
+app.controller('TasksCtrl', ['TaskService', '$scope', function(TaskService, $scope) {
 	
 	$scope.tasks = [];
 

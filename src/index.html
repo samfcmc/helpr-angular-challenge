@@ -6,35 +6,19 @@
     <script src="script/vendor/angular.js"></script>
     <script src="script/vendor/jquery.js"></script>
     <script src="script/vendor/bootstrap.js"></script>
+    <script src="script/vendor/angular-ui-router.js"></script>
     <script src="app.js"></script>
     <script src="tasks/task-service.js"></script>
     <script src="tasks/tasks-controller.js"></script>
     <script src="tasks/priority-filter.js"></script>
     <script src="tasks/task-directive.js"></script>
     <script src="tasks/new-task-directive.js"></script>
+    <script src="router.js"></script>
     <title>Helpr Angular Challenge</title>
   </head>
   <body ng-app="app">
     
-    <div>
-      
-      <div ng-controller="TasksCtrl">
-        <div class="row">
-          <h1>Tasks</h1>
-          <p>You currently have {{tasks.length}} remaining tasks</p>    
-        </div>
-        <div class="row">
-          <new-task submit="add($newTask)"></new-task>
-        </div>
-        <div ng-repeat="task in tasks">
-          <task task="task"></task>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <button class="btn btn-warning btn-block" ng-click="clear()" ng-disabled="!tasks.length">Clear</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ui-view></ui-view>
+
   </body>
 </html>

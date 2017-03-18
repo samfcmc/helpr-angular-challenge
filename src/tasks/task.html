@@ -6,6 +6,8 @@
 		<input class="form-control" type="text" value="{{task.priority | priority}}" disabled>
 	</div>
 	<div class="col-sm-2">
-		<button class="btn btn-danger btn-block" ng-click="remove(task)">&times;</button>
+		<remove-action class="btn btn-danger btn-block" ng-click="remove()">
+			&times;
+		</remove-action>
 	</div>
 </div>

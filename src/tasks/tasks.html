@@ -3,13 +3,14 @@
 	<p>You currently have {{tasks.length}} remaining tasks</p>    
 </div>
 <div class="row">
-	<new-task submit="add($newTask)"></new-task>
+	<new-task new-task="newTask" submit="add(newTask)"></new-task>
 </div>
 <div ng-repeat="task in tasks">
-	<task task="task"></task>
+	<task task="task" remove="remove(task)"></task>
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<button class="btn btn-warning btn-block" ng-click="clear()" ng-disabled="!tasks.length">Clear</button>
+		<button class="btn btn-warning btn-block" 
+		ng-click="clear()" ng-disabled="!tasks.length">Clear</button>
 	</div>
 </div>

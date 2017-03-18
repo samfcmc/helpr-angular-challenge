@@ -11,7 +11,8 @@ app.directive('task', [() => {
 		templateUrl: 'tasks/task.html',
 		restrict: 'E',
 		scope: {
-			task: '='
+			task: '=',
+			remove: '&'
 		}
 	}
 

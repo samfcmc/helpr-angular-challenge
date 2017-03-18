@@ -1,5 +1,6 @@
 const gulp = require('gulp');
-const serve = require('gulp-serve'); 
+const serve = require('gulp-serve');
+const bower = require('gulp-bower'); 
 const src = {
   js: [
     './bower_components/angular/angular.js',
@@ -16,7 +17,11 @@ gulp.task('serve', ['css', 'js'], serve({
   root: ['src']
 }));
 
-gulp.task('js', () => {
+gulp.task('bower', () => {
+  return bower();
+});
+
+gulp.task('js', ['bower'], () => {
   return gulp.src(src.js)
     .pipe(gulp.dest('src/script/vendor'));
 });

@@ -24,6 +24,11 @@ const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
 
+/**
+ * Browser Sync
+ */
+var browserSync = require('browser-sync').create();
+
 const paths = {
   build: 'build',
   src: 'src',
@@ -126,7 +131,8 @@ let bundle = (entries, bundleName, transforms, debug = false) => {
       .pipe(sourceMapsInit())
       .pipe(debug ? gutil.noop() : uglify())
       .pipe(sourceMapsWrite())
-      .pipe(gulp.dest(config.build.path));
+      .pipe(gulp.dest(config.build.path))
+      .pipe(browserSync.stream());
   }
 
   bundler.on('log', gutil.log);
@@ -168,7 +174,8 @@ let compileStyles = (options = {}, debug = false) => {
     .pipe(sourcemapsInit())
     .pipe(sass(options).on('error', sass.logError))
     .pipe(sourcemapsWrite())
-    .pipe(gulp.dest(config.build.style));
+    .pipe(gulp.dest(config.build.style))
+    .pipe(browserSync.stream());
 }
 
 /**
@@ -254,6 +261,11 @@ gulp.task('build:dev', ['build:common', 'bundle:dev', 'style:dev']);
 
 // Watch for changes and rebuild the app in development mode
 gulp.task('watch', ['build:dev'], () => {
+
+  browserSync.init({
+    server: 'build/'
+  })
+
   gulp.watch(config.src.sass, ['style:dev']);
 
   // Watch for HTML changes
@@ -263,8 +275,8 @@ gulp.task('watch', ['build:dev'], () => {
       // Just copy the file to the build folder
       return gulp.src(file.path)
         .pipe(gulp.dest(config.build.path))
-        .pipe(logFileChange(file));
-  })
+        .pipe(browserSync.stream());
+  });
 
   // Watch for fonts changes
   watch(config.src.fonts, {
@@ -273,8 +285,8 @@ gulp.task('watch', ['build:dev'], () => {
       // Just copy the file to the build folder
       return gulp.src(file.path)
         .pipe(gulp.dest(config.build.fonts))
-        .pipe(logFileChange(file));
-  })
+        .pipe(browserSync.stream());
+  });
 })
 
 /**
@@ -301,9 +313,9 @@ gulp.task('build:prod', ['build:common', 'bundle:prod', 'style:prod']);
 /**
  * Runs a local HTTP server
  */
-gulp.task('serve', ['watch'], serve({
-  root: [config.build.path]
-}));
+gulp.task('serve', ['watch'], () => {
+  
+});
 
 /**
  * Tasks for the user:

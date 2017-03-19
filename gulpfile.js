@@ -27,7 +27,8 @@ const watch = require('gulp-watch');
 const paths = {
   build: 'build',
   src: 'src',
-  sourceMaps: '/source'
+  sourceMaps: '/source',
+  bowerComponetns: 'bower_components'
 }
 
 const config = {
@@ -37,7 +38,8 @@ const config = {
     app: 'js/app.js',
     sourceMapsRoot: `${paths.sourceMaps}`,
     styleSourceMapsRoot: `${paths.sourceMaps}/css`,
-    style: `${paths.build}/style` 
+    style: `${paths.build}/style`,
+    fonts: `${paths.build}/fonts` 
   },
   src: {
     path: `${paths.src}`,
@@ -45,7 +47,11 @@ const config = {
     app: [`${paths.src}/app.js`],
     html: `${paths.src}/**/*.html`,
     style: `${paths.src}/style/main.scss`,
-    sass: `${paths.src}/**/*.scss`
+    sass: `${paths.src}/**/*.scss`,
+    fonts: [
+      `${paths.bowerComponetns}/bootstrap-sass/assets/fonts/**/*`,
+      `${paths.src}/fonts/**/*`
+    ]
   }
 }
 
@@ -207,7 +213,7 @@ let bundleApp = (debug = false) => {
  * @param {Vynil} file File that changed
  */
 let logFileChange = (file) => {
-  return gutil.log('Changed file :', file.basename);
+  return gutil.log('Changed file:', file.basename);
 };
 
 /**
@@ -218,7 +224,12 @@ gulp.task('html', () => {
     .pipe(gulp.dest(config.build.path));
 });
 
-gulp.task('build:common', ['html']);
+gulp.task('fonts', () => {
+  return gulp.src(config.src.fonts)
+    .pipe(gulp.dest(config.build.fonts));
+});
+
+gulp.task('build:common', ['html', 'fonts']);
 
 /**
  * Dev environment specific tasks
@@ -246,11 +257,23 @@ gulp.task('watch', ['build:dev'], () => {
   gulp.watch(config.src.sass, ['style:dev']);
 
   // Watch for HTML changes
-  watch(config.src.html, (file) => {
-    // Just copy the file to the build folder
-    return gulp.src(file.path)
-      .pipe(gulp.dest(config.build.path))
-      .pipe(logFileChange(file));
+  watch(config.src.html, {
+      events: ['add', 'change']
+    }, (file) => {
+      // Just copy the file to the build folder
+      return gulp.src(file.path)
+        .pipe(gulp.dest(config.build.path))
+        .pipe(logFileChange(file));
+  })
+
+  // Watch for fonts changes
+  watch(config.src.fonts, {
+      events: ['add', 'change']
+    }, (file) => {
+      // Just copy the file to the build folder
+      return gulp.src(file.path)
+        .pipe(gulp.dest(config.build.fonts))
+        .pipe(logFileChange(file));
   })
 })
 

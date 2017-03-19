@@ -29,7 +29,7 @@ export default (tasks) => {
 		/**
 		 * Add a new task
 		 */
-		$scope.add = (task) => {
+		$scope.add = (task = {}) => {
 			$scope.tasks.push({title: task.title, priority: task.priority || DEFAULT_PRIORITY});
 			$scope.newTask = {};
 		};

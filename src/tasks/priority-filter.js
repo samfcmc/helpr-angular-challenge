@@ -4,21 +4,23 @@
  * the corresponding text
  */
 
-app.filter('priority', [() => {
-	return (input) => {
-		let priorities = {
-			"1": "High",
-			"2": "Normal",
-			"3": "Low",
-			"0": "Unknown"
-		}
+export default (tasks) => {
+	return tasks.filter('priority', [() => {
+		return (input) => {
+			let priorities = {
+				"1": "High",
+				"2": "Normal",
+				"3": "Low",
+				"0": "Unknown"
+			}
 
-		var text = priorities[input];
+			var text = priorities[input];
 
-		if(!text) {
-			text = priorities[0];
+			if(!text) {
+				text = priorities[0];
+			}
+			
+			return text;
 		}
-		
-		return text;
-	}
-}]);
+	}]);
+}

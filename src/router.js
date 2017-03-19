@@ -2,15 +2,18 @@
  * Router
  * Routing configuration
  */
-app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
+export default (app) => {
+	app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	
-	$stateProvider.state({
-		name: 'tasks',
-		url: '/tasks',
-		templateUrl: 'tasks/tasks.html',
-		controller: 'TasksCtrl'
-	});
+		$stateProvider.state({
+			name: 'tasks',
+			url: '/tasks',
+			templateUrl: 'tasks/tasks.html',
+			controller: 'TasksCtrl'
+		});
 
-	$urlRouterProvider.otherwise('/tasks');
+		$urlRouterProvider.otherwise('/tasks');
 
-}]);
+	}]);
+}

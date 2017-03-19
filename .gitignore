@@ -1,4 +1,3 @@
 bower_components
 node_modules
-src/script/vendor
-src/style/vendor
+build/

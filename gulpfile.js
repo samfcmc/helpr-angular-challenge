@@ -14,16 +14,15 @@ const watchify = require('watchify');
 const debowerify = require('debowerify');
 const babelify = require("babelify");
 
-
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const assign = require('lodash.assign');
 const gutil = require('gulp-util');
 const sourcemaps = require('gulp-sourcemaps');
 const del = require('del');
-
 const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
+const watch = require('gulp-watch');
 
 const paths = {
   build: 'build',
@@ -45,7 +44,8 @@ const config = {
     vendor: [`${paths.src}/vendor.js`],
     app: [`${paths.src}/app.js`],
     html: `${paths.src}/**/*.html`,
-    style: `${paths.src}/style/main.scss`
+    style: `${paths.src}/style/main.scss`,
+    sass: `${paths.src}/**/*.scss`
   }
 }
 
@@ -59,8 +59,11 @@ const config = {
  *  "transform": <A reference for the transform: debowerify|babelify|etc...>
  *  "options": <A set of options to apply for this transform. This is optional>
  * }
- * @param {boolean} debug Flag that defines if the bundle will be
- * watched for changes. Default: False
+ * @param {boolean} debug If true, the bundle will be
+ * watched for changes and the sourcemaps will be generated. 
+ * Else, there will be no watching process, the sourcemaps will
+ * not be generated and the generated files will be minified.
+ *  Default: False
  */
 let bundle = (entries, bundleName, transforms, debug = false) => {
   let customOptions = {
@@ -167,7 +170,7 @@ let compileStyles = (options = {}, debug = false) => {
  * @param {Boolean} debug If true, the vendors bundle 
  * will be generated in debug mode, which means,
  * it will not be minified and the sourcemaps will be
- * generated.
+ * generated. False otherwise.
  */
 let bundleVendors = (debug = false) => {
   let transforms = [
@@ -179,6 +182,13 @@ let bundleVendors = (debug = false) => {
   return bundle(config.src.vendor, config.build.vendor, transforms, debug);
 }
 
+/**
+ * 
+ * @param {Boolean} debug If true, the app bundle 
+ * will be generated in debug mode, which means,
+ * it will not be minified and the sourcemaps will be
+ * generated. False otherwise.
+ */
 let bundleApp = (debug = false) => {
   let transforms = [
     {
@@ -193,18 +203,22 @@ let bundleApp = (debug = false) => {
 }
 
 /**
+ * Logs a file change
+ * @param {Vynil} file File that changed
+ */
+let logFileChange = (file) => {
+  return gutil.log('Changed file :', file.basename);
+};
+
+/**
  * Common build tasks
  */
-gulp.task('bower', () => {
-  return bower();
-});
-
 gulp.task('html', () => {
   return gulp.src(config.src.html)
     .pipe(gulp.dest(config.build.path));
 });
 
-gulp.task('build:common', ['bower', 'html']);
+gulp.task('build:common', ['html']);
 
 /**
  * Dev environment specific tasks
@@ -226,6 +240,19 @@ gulp.task('style:dev', () => {
 })
 
 gulp.task('build:dev', ['build:common', 'bundle:dev', 'style:dev']);
+
+// Watch for changes and rebuild the app in development mode
+gulp.task('watch', ['build:dev'], () => {
+  gulp.watch(config.src.sass, ['style:dev']);
+
+  // Watch for HTML changes
+  watch(config.src.html, (file) => {
+    // Just copy the file to the build folder
+    return gulp.src(file.path)
+      .pipe(gulp.dest(config.build.path))
+      .pipe(logFileChange(file));
+  })
+})
 
 /**
  * Production environment specific tasks
@@ -251,7 +278,7 @@ gulp.task('build:prod', ['build:common', 'bundle:prod', 'style:prod']);
 /**
  * Runs a local HTTP server
  */
-gulp.task('serve', ['build:dev'], serve({
+gulp.task('serve', ['watch'], serve({
   root: [config.build.path]
 }));
 
@@ -263,6 +290,13 @@ gulp.task('serve', ['build:dev'], serve({
  */
 gulp.task('clean', () => {
   return del([config.build.path]);
+});
+
+/**
+ * bower: Install all frontend dependencies
+ */
+gulp.task('bower', () => {
+  return bower();
 });
 
 /**
@@ -278,6 +312,8 @@ gulp.task('prod', ['build:prod']);
 gulp.task('serve-prod', ['prod'], serve({
   root: [config.build.path]
 }));
+
+
 
 /**
  * Default Task

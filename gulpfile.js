@@ -269,24 +269,25 @@ gulp.task('watch', ['build:dev'], () => {
   gulp.watch(config.src.sass, ['style:dev']);
 
   // Watch for HTML changes
-  watch(config.src.html, {
+  /*watch(config.src.html, {
       events: ['add', 'change']
     }, (file) => {
+      console.log(file.cwd);
       // Just copy the file to the build folder
       return gulp.src(file.path)
         .pipe(gulp.dest(config.build.path))
         .pipe(browserSync.stream());
-  });
+  });*/
+  gulp.src(config.src.html)
+    .pipe(watch(config.src.html, {base: config.src.path}))
+    .pipe(gulp.dest(config.build.path))
+    .pipe(browserSync.stream());
 
   // Watch for fonts changes
-  watch(config.src.fonts, {
-      events: ['add', 'change']
-    }, (file) => {
-      // Just copy the file to the build folder
-      return gulp.src(file.path)
-        .pipe(gulp.dest(config.build.fonts))
-        .pipe(browserSync.stream());
-  });
+   gulp.src(config.src.fonts)
+    .pipe(watch(config.src.fonts, {base: config.src.path}))
+    .pipe(gulp.dest(config.build.path))
+    .pipe(browserSync.stream());
 })
 
 /**

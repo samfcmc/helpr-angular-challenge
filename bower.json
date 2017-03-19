@@ -8,6 +8,10 @@
   "license": "MIT",
   "homepage": "http://helprapp.io",
   "private": true,
+  "repository": {   
+    "type": "git",
+    "url": "https://github.com/samfcmc/helpr-angular-challenge"
+  },
   "ignore": [
     "**/.*",
     "node_modules",

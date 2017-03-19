@@ -13,7 +13,12 @@ After you have NPM installed you can use it to install gulp CLI:
 npm install gulp -g
 ```
 
-Then, you need to install the app's dependencies using bower. However, there is a gulp task to do just that:
+Then, install the npm dependencies using the command:
+```bash
+npm install
+```
+
+Now you need to install the app's dependencies using bower. However, there is a gulp task to do just that:
 ```bash
 gulp bower
 ```
